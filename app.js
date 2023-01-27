@@ -10,16 +10,13 @@ const morgan = require('morgan');
 const url = require('url');
 
 const bdd = require("./src/services/db/mongodb.js");
+const routes = require("./src/routes/index.js");
+
 bdd.connectTodB();
 
-const app = express()
-app.use(morgan('combined'))
-const port = 3000
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+const port = 3000;
+routes.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
