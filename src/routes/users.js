@@ -49,6 +49,31 @@ module.exports = async(app)=>{
       res.status(400).json({
         "error": "Something went wrong !"
       });
+      return;
+    }
+
+    //Seems valid
+    return res.json(user);
+  });
+
+  app.post('/users/getWithUsername', async(req, res) => {
+    if(req.body.username==undefined){
+      res.status(400).json({
+        "route": "/users/create",
+        "args": {
+          "username": "A String representing the name of this user"
+        },
+        "return": "An object representing the updated user"
+      });
+      return;
+    }
+
+    const user = await userControllers.findUserByUsername(req.body.username+'');
+    if(!user){
+      res.status(400).json({
+        "error": "User don't exists !"
+      });
+      return;
     }
 
     //Seems valid
