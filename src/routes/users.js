@@ -1,6 +1,5 @@
 'use-strict';
-const crypto = require('crypto');
-const crud = require('./../services/db/crud.js');
+const userControllers = require("../controllers/users.js");
 
 //This function will initialize API routes for users
 module.exports = async(app)=>{
@@ -17,19 +16,16 @@ module.exports = async(app)=>{
       return;
     }
 
-    const user = {
-      "username": req.body.username+'',
-      "id": crypto.randomBytes(4).toString('hex')
-    }
 
-    if(await crud.findOne('users', {"username":req.body.username+''} )){
+
+    if(await userControllers.findUserByUsername(req.body.username+'')){
       res.status(400).json({
         "error": "Username already taken !"
       });
       return;
     }
 
-    crud.insertOne('users', user);
+    const user = await userControllers.createUserWithUsername(req.body.username+'');
 
     //Seems valid
     return res.json(user);
