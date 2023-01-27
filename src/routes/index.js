@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 
 const userRoutes = require('./users.js');
 const moviesRoutes = require('./movies.js');
+const watchlistsRoutes = require('./watchlists.js');
 
 const app = express();
 //const users = require('./users');
@@ -42,5 +43,6 @@ app.get('/metrics', (req, res, next) => {
 //Définition des routes :
 userRoutes(app);
 moviesRoutes(app);
+watchlistsRoutes(app);
 
 module.exports = app;
