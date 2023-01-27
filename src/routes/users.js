@@ -31,4 +31,28 @@ module.exports = async(app)=>{
     return res.json(user);
   });
 
+  app.post('/users/update', async(req, res) => {
+    if(req.body.oldUsername==undefined || req.body.newUsername==undefined){
+      res.status(400).json({
+        "route": "/users/create",
+        "args": {
+          "oldUsername": "A String representing the old name of this user",
+          "newUsername": "A String representing the new name of this user"
+        },
+        "return": "An object representing the updated user"
+      });
+      return;
+    }
+
+    const user = await userControllers.updateUserWithUsername(req.body.oldUsername+'', req.body.newUsername+'');
+    if(!user){
+      res.status(400).json({
+        "error": "Something went wrong !"
+      });
+    }
+
+    //Seems valid
+    return res.json(user);
+  });
+
 }

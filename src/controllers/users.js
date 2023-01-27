@@ -1,3 +1,4 @@
+'strict-mode';
 const crypto = require('crypto');
 
 const crud = require('./../services/db/crud.js');
@@ -21,6 +22,15 @@ module.exports = {
     crud.insertOne('users', user);
 
     return user;
+  },
+
+  updateUserWithUsername: async(oldUsername, newUsername)=>{
+    if(! await module.exports.findUserByUsername(oldUsername))return undefined;//User don't exist
+
+    await crud.updateOne('users', {"username":oldUsername}, {"$set": {"username":newUsername}})
+    .catch(err=>{console.log(err)});
+
+    return await module.exports.findUserByUsername(newUsername);
   }
 
 }
