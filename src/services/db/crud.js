@@ -115,3 +115,17 @@ async function deleteMany(collectionName, query) {
       throw e;
   }
 }
+
+module.exports = {
+
+  deleteMany:deleteMany,
+  deleteOne:deleteOne,
+  replace:replace,
+  updateMany:updateMany,
+  updateOne:updateOne,
+  insertMany:insertMany,
+  insertOne:insertOne,
+  find:find,
+  findOne:findOne
+
+};
