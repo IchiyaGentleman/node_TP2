@@ -104,7 +104,7 @@ module.exports = async(app)=>{
 
     watchlist.movies.push(req.body.movieId);
 
-    watchlistsControllers.addMovie(watchlist)
+    watchlistsControllers.setMovies(watchlist)
     .then(()=>{
       return res.json(watchlist);
     });

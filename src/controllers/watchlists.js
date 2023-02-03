@@ -26,7 +26,7 @@ module.exports = {
     return await crud.findOne('watchlists', {"id":watchlistId} );
   },
 
-  addMovie: async(watchlist)=>{
+  setMovies: async(watchlist)=>{
     crud.updateOne('watchlists', {"id":watchlist.id}, {"$set": {"movies":watchlist.movies}})
   }
 
