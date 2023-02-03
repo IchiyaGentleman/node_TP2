@@ -262,4 +262,41 @@ module.exports = async(app)=>{
 
   });
 
+  app.post('/watchlists/addfriend', async(req, res)=>{
+    if(req.body.watchlistId==undefined || req.body.userId==undefined){
+      res.status(400).json({
+        "route": "/watchlists/addfriend",
+        "args": {
+          "watchlistId": "A String representing the ID of the watchlist",
+          "userId": "The ID of the user that will have access to this watchlist",
+        },
+        "return": "The edited watchlist object"
+      });
+      return;
+    }
+
+    let watchlist = await watchlistsControllers.findWatchlistWithID(req.body.watchlistId)
+    if(! watchlist){
+      res.status(400).json({
+        "error": "Watchlist don't exists !"
+      });
+      return;
+    }
+
+    if(! await userControllers.findUserById(req.body.userId)){
+      res.status(400).json({
+        "error": "This user don't exists !"
+      });
+      return;
+    }
+
+    watchlist.friends.push(req.body.userId);
+
+    watchlistsControllers.setFriends(watchlist)
+    .then(()=>{
+      return res.json(watchlist);
+    });
+
+  });
+
 }
