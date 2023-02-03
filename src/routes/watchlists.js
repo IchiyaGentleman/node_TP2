@@ -99,6 +99,32 @@ module.exports = async(app)=>{
     return res.json(watchlist);
   });
 
+  app.post('/watchlists/getalluser', async(req, res)=>{
+    if(req.body.userId==undefined){
+      res.status(400).json({
+        "route": "/watchlists/getalluser",
+        "args": {
+          "userId": "A String representing the ID of the user"
+        },
+        "return": "An object representing the watchlists"
+      });
+      return;
+    }
+
+    if(! await userControllers.findUserById(req.body.userId+'')){
+      res.status(400).json({
+        "error": "This user don't exists !"
+      });
+      return;
+
+    }
+
+    let watchlists = await watchlistsControllers.getUsersWhatchlists(req.body.userId+'');
+
+    //Seems valid
+    return res.json(watchlists);
+  });
+
   app.post('/watchlists/addmovie', async(req, res)=>{
     if(req.body.watchlistId==undefined || req.body.movieId==undefined){
       res.status(400).json({
@@ -230,6 +256,73 @@ module.exports = async(app)=>{
 
 
     watchlistsControllers.setMovies(watchlist)
+    .then(()=>{
+      return res.json(watchlist);
+    });
+
+  });
+
+  app.post('/watchlists/addfriend', async(req, res)=>{
+    if(req.body.watchlistId==undefined || req.body.userId==undefined){
+      res.status(400).json({
+        "route": "/watchlists/addfriend",
+        "args": {
+          "watchlistId": "A String representing the ID of the watchlist",
+          "userId": "The ID of the user that will have access to this watchlist",
+        },
+        "return": "The edited watchlist object"
+      });
+      return;
+    }
+
+    let watchlist = await watchlistsControllers.findWatchlistWithID(req.body.watchlistId)
+    if(! watchlist){
+      res.status(400).json({
+        "error": "Watchlist don't exists !"
+      });
+      return;
+    }
+
+    if(! await userControllers.findUserById(req.body.userId)){
+      res.status(400).json({
+        "error": "This user don't exists !"
+      });
+      return;
+    }
+
+    watchlist.friends.push(req.body.userId);
+
+    watchlistsControllers.setFriends(watchlist)
+    .then(()=>{
+      return res.json(watchlist);
+    });
+
+  });
+
+  app.post('/watchlists/setnote', async(req, res)=>{
+    if(req.body.watchlistId==undefined || req.body.note==undefined){
+      res.status(400).json({
+        "route": "/watchlists/setnote",
+        "args": {
+          "watchlistId": "A String representing the ID of the watchlist",
+          "note": "The description that will be added to this watchlist",
+        },
+        "return": "The edited watchlist object"
+      });
+      return;
+    }
+
+    let watchlist = await watchlistsControllers.findWatchlistWithID(req.body.watchlistId)
+    if(! watchlist){
+      res.status(400).json({
+        "error": "Watchlist don't exists !"
+      });
+      return;
+    }
+
+    watchlist.note = req.body.note;
+
+    watchlistsControllers.setNote(watchlist)
     .then(()=>{
       return res.json(watchlist);
     });

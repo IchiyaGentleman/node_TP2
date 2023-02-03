@@ -11,7 +11,8 @@ module.exports = {
       "name": name,
       "id": crypto.randomBytes(4).toString('hex'),
       "movies": [],
-      "note": ""
+      "note": "",
+      "friends": []
     }
 
     crud.insertOne('watchlists', watchlist);
@@ -31,7 +32,19 @@ module.exports = {
   },
 
   setMovies: async(watchlist)=>{
-    crud.updateOne('watchlists', {"id":watchlist.id}, {"$set": {"movies":watchlist.movies}})
+    crud.updateOne('watchlists', {"id":watchlist.id}, {"$set": {"movies":watchlist.movies}});
+  },
+
+  setFriends: async(watchlist)=>{
+    crud.updateOne('watchlists', {"id":watchlist.id}, {"$set": {"friends":watchlist.friends}});
+  },
+
+  getUsersWhatchlists: async(userid)=>{
+    return await crud.find('watchlists', {"owner":userid});
+  },
+
+  setNote: async(watchlist)=>{
+    crud.updateOne('watchlists', {"id":watchlist.id}, {"$set": {"note":watchlist.note}});
   }
 
 }

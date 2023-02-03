@@ -80,4 +80,19 @@ module.exports = async(app)=>{
     return res.json(user);
   });
 
+  app.post('/users/getall', async(req, res) => {
+    if(false){
+      res.status(400).json({
+        "route": "/users/getall",
+        "return": "An object representing all users"
+      });
+      return;
+    }
+
+    const users = await userControllers.getAll();
+
+    //Seems valid
+    return res.json(users);
+  });
+
 }
