@@ -41,6 +41,31 @@ module.exports = async(app)=>{
     return res.json(watchlist);
   });
 
+  app.post('/watchlists/delete', async(req, res)=>{
+    if(req.body.watchlistId==undefined){
+      res.status(400).json({
+        "route": "/watchlists/delete",
+        "args": {
+          "watchlistId": "A String representing the ID of the watchlist to delete"
+        },
+        "return": "Nothing"
+      });
+      return;
+    }
+
+    if(!await watchlistsControllers.findWatchlistWithID(req.body.watchlistId)){
+      res.status(400).json({
+        "error": "Watchlist don't exists !"
+      });
+      return;
+    }
+
+    await watchlistsControllers.deleteWatchlist(req.body.watchlistId);
+
+    //Seems valid
+    return res.json({});
+  });
+
   app.post('/watchlists/get', async(req, res)=>{
     if(req.body.userId==undefined || req.body.name==undefined){
       res.status(400).json({

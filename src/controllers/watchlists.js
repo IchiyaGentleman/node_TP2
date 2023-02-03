@@ -19,6 +19,10 @@ module.exports = {
     return watchlist;
   },
 
+  deleteWatchlist: async(id)=>{
+    crud.deleteOne('watchlists', {"id":id});
+  },
+
   findWatchlistWithUserAndName: async(userId, name)=>{
     return await crud.findOne('watchlists', {"owner":userId, "name": name} );
   },
