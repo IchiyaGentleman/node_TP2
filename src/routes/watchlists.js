@@ -299,4 +299,34 @@ module.exports = async(app)=>{
 
   });
 
+  app.post('/watchlists/setnote', async(req, res)=>{
+    if(req.body.watchlistId==undefined || req.body.note==undefined){
+      res.status(400).json({
+        "route": "/watchlists/setnote",
+        "args": {
+          "watchlistId": "A String representing the ID of the watchlist",
+          "note": "The description that will be added to this watchlist",
+        },
+        "return": "The edited watchlist object"
+      });
+      return;
+    }
+
+    let watchlist = await watchlistsControllers.findWatchlistWithID(req.body.watchlistId)
+    if(! watchlist){
+      res.status(400).json({
+        "error": "Watchlist don't exists !"
+      });
+      return;
+    }
+
+    watchlist.note = req.body.note;
+
+    watchlistsControllers.setNote(watchlist)
+    .then(()=>{
+      return res.json(watchlist);
+    });
+
+  });
+
 }
