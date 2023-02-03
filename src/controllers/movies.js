@@ -22,6 +22,10 @@ module.exports = {
 
   findMovieWithId: async(id)=>{
     return await crud.findOne('movies', {"id":id} );
+  },
+
+  getAll: async()=>{
+    return await crud.find('movies', {});
   }
 
 }

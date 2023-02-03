@@ -32,4 +32,20 @@ module.exports = async(app)=>{
     return res.json(movie);
   });
 
+  app.post('/movies/all', async(req, res)=>{
+    if(false){
+      res.status(400).json({
+        "route": "/movies/all",
+        "return": "An object representing every films"
+      });
+      return;
+    }
+
+    const movies = await movieControllers.getAll();
+
+    //Seems valid
+    return res.json(movies);
+  });
+
+
 }
