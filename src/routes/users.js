@@ -56,10 +56,10 @@ module.exports = async(app)=>{
     return res.json(user);
   });
 
-  app.post('/users/getWithUsername', async(req, res) => {
+  app.post('/users/getUserWithUsername', async(req, res) => {
     if(req.body.username==undefined){
       res.status(400).json({
-        "route": "/users/getWithUsername",
+        "route": "/users/getUserWithUsername",
         "args": {
           "username": "A String representing the name of this user"
         },
