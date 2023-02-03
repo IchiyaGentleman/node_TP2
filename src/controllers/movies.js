@@ -18,6 +18,10 @@ module.exports = {
 
   findMovieWithName: async(title)=>{
     return await crud.findOne('movies', {"title":title} );
+  },
+
+  findMovieWithId: async(id)=>{
+    return await crud.findOne('movies', {"id":id} );
   }
 
 }
