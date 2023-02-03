@@ -99,6 +99,32 @@ module.exports = async(app)=>{
     return res.json(watchlist);
   });
 
+  app.post('/watchlists/getalluser', async(req, res)=>{
+    if(req.body.userId==undefined){
+      res.status(400).json({
+        "route": "/watchlists/getalluser",
+        "args": {
+          "userId": "A String representing the ID of the user"
+        },
+        "return": "An object representing the watchlists"
+      });
+      return;
+    }
+
+    if(! await userControllers.findUserById(req.body.userId+'')){
+      res.status(400).json({
+        "error": "This user don't exists !"
+      });
+      return;
+
+    }
+
+    let watchlists = await watchlistsControllers.getUsersWhatchlists(req.body.userId+'');
+
+    //Seems valid
+    return res.json(watchlists);
+  });
+
   app.post('/watchlists/addmovie', async(req, res)=>{
     if(req.body.watchlistId==undefined || req.body.movieId==undefined){
       res.status(400).json({

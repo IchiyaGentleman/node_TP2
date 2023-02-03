@@ -32,6 +32,10 @@ module.exports = {
 
   setMovies: async(watchlist)=>{
     crud.updateOne('watchlists', {"id":watchlist.id}, {"$set": {"movies":watchlist.movies}})
+  },
+
+  getUsersWhatchlists: async(userid)=>{
+    return await crud.find('watchlists', {"owner":userid});
   }
 
 }
