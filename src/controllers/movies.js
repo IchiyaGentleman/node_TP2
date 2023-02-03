@@ -45,9 +45,9 @@ module.exports = {
       const film = {
         "title": response.data.Title,
         "id": crypto.randomBytes(4).toString('hex'),
-        "year": response.data.Year,
+        "year": Number(response.data.Year),
         "language": response.data.Language,
-        "imdbRating": response.data.imdbRating,
+        "imdbRating": Number(response.data.imdbRating),
         "note": "Imported from OMDBApi"
       }
 
