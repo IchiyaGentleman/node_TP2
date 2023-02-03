@@ -1,6 +1,8 @@
 'strict-mode';
 const crypto = require('crypto');
+const axios = require('axios');
 
+const conf = require("../../conf.json");
 const crud = require('./../services/db/crud.js');
 
 module.exports = {
@@ -34,6 +36,28 @@ module.exports = {
 
   setnote: async(movie)=>{
     crud.updateOne('movies', {"id":movie.id}, {"$set": {"note":movie.note}});
+  },
+
+  getFromOmdb: async(title)=>{
+    try{
+      const response = await axios.get('http://www.omdbapi.com/?t=London&apikey='+conf.tp2.APIKEY);
+
+      const film = {
+        "title": response.data.Title,
+        "id": crypto.randomBytes(4).toString('hex'),
+        "year": response.data.Year,
+        "language": response.data.Language,
+        "imdbRating": response.data.imdbRating,
+        "note": "Imported from OMDBApi"
+      }
+
+      crud.insertOne('movies', film);
+
+      return film
+
+    }catch(e){
+      console.log(e);
+    }
   }
 
 }
