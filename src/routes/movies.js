@@ -32,4 +32,31 @@ module.exports = async(app)=>{
     return res.json(movie);
   });
 
+  app.post('/movies/get', async(req, res)=>{
+    if(false){
+      res.status(400).json({
+        "route": "/movies/get",
+        "args": {
+          "year": "Not required. An int representing the release year of this movie",
+          "language": "Not required. The language of the movies",
+          "imdbRating": "Not required. Int representing the imdbRating score"
+        },
+        "return": "An object representing every films"
+      });
+      return;
+    }
+
+    let query = {};
+
+    if(req.body.year) query['year']=req.body.year;//If param given, we will search it
+    if(req.body.language) query['language']=req.body.language;
+    if(req.body.imdbRating) query['imdbRating']=req.body.imdbRating;
+
+    const movies = await movieControllers.get(query);
+
+    //Seems valid
+    return res.json(movies);
+  });
+
+
 }

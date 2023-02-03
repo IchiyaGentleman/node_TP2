@@ -8,7 +8,10 @@ module.exports = {
   createMovie: async(title)=>{
     const film = {
       "title": title,
-      "id": crypto.randomBytes(4).toString('hex')
+      "id": crypto.randomBytes(4).toString('hex'),
+      "year": "0",
+      "language": "French",
+      "imdbRating": 0
     }
 
     crud.insertOne('movies', film);
@@ -22,6 +25,10 @@ module.exports = {
 
   findMovieWithId: async(id)=>{
     return await crud.findOne('movies', {"id":id} );
+  },
+
+  get: async(query)=>{
+    return await crud.find('movies', query);
   }
 
 }
