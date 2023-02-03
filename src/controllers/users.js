@@ -31,6 +31,10 @@ module.exports = {
     .catch(err=>{console.log(err)});
 
     return await module.exports.findUserByUsername(newUsername);
+  },
+
+  getAll: async()=>{
+    return await crud.find('users', {});
   }
 
 }
