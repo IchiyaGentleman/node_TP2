@@ -11,7 +11,8 @@ module.exports = {
       "id": crypto.randomBytes(4).toString('hex'),
       "year": "0",
       "language": "French",
-      "imdbRating": 0
+      "imdbRating": 0,
+      "note": ""
     }
 
     crud.insertOne('movies', film);
@@ -29,6 +30,10 @@ module.exports = {
 
   get: async(query)=>{
     return await crud.find('movies', query);
+  },
+
+  setnote: async(movie)=>{
+    crud.updateOne('movies', {"id":movie.id}, {"$set": {"note":movie.note}});
   }
 
 }

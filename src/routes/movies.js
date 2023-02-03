@@ -58,5 +58,33 @@ module.exports = async(app)=>{
     return res.json(movies);
   });
 
+  app.post('/movies/setnote', async(req, res)=>{
+    if(req.body.movieId==undefined || req.body.note==undefined){
+      res.status(400).json({
+        "route": "/movies/setnote",
+        "args": {
+          "movieId": "The ID representing the movie",
+          "note": "The description of this movie"
+        },
+        "return": "An object representing this movie"
+      });
+      return;
+    }
+
+    const movie = await movieControllers.findMovieWithId(req.body.movieId);
+    if(!movie){
+      res.status(400).json({
+        "error": "Movie don't exists !"
+      });
+      return;
+    }
+
+    movie.note = req.body.note;
+    movieControllers.setnote(movie)
+    .then(()=>{
+      return res.json(movie);
+    });
+  });
+
 
 }
