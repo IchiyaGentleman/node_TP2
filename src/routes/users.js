@@ -59,7 +59,7 @@ module.exports = async(app)=>{
   app.post('/users/getWithUsername', async(req, res) => {
     if(req.body.username==undefined){
       res.status(400).json({
-        "route": "/users/create",
+        "route": "/users/getWithUsername",
         "args": {
           "username": "A String representing the name of this user"
         },
