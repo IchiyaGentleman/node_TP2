@@ -165,4 +165,50 @@ module.exports = async(app)=>{
 
   });
 
+  app.post('/watchlists/removemovie', async(req, res)=>{
+    if(req.body.watchlistId==undefined || req.body.movieId==undefined){
+      res.status(400).json({
+        "route": "/watchlists/removemovie",
+        "args": {
+          "watchlistId": "A String representing the ID of the watchlist",
+          "movieId": "The ID of the film to remove from this watchlist",
+        },
+        "return": "The edited watchlist object"
+      });
+      return;
+    }
+
+    let watchlist = await watchlistsControllers.findWatchlistWithID(req.body.watchlistId)
+    if(! watchlist){
+      res.status(400).json({
+        "error": "Watchlist don't exists !"
+      });
+      return;
+    }
+
+    somethingEdited = false;//Will allow us to detect movies that don't belong to this watchlist
+    for(let i=0; i<watchlist.movies.length; i++){//We will find the movie that must be edited
+        if(watchlist.movies[i].id==req.body.movieId){
+          //This is the movie that musy be edited
+          watchlist.movies.splice(i,1);
+          somethingEdited = true;
+          break;
+        }
+    }
+
+    if(!somethingEdited){
+      res.status(400).json({
+        "error": "Movie don't exists !"
+      });
+      return;
+    }
+
+
+    watchlistsControllers.setMovies(watchlist)
+    .then(()=>{
+      return res.json(watchlist);
+    });
+
+  });
+
 }
