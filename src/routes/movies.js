@@ -23,10 +23,21 @@ module.exports = async(app)=>{
       res.status(400).json({
         "error": "Movie already registered !"
       });
+      logger.log({
+          level: "warn",
+          message: "Film déjà enregistré : "+req.body.title,
+          source: "Movies"
+      });
       return;
     }
 
     const movie = await movieControllers.createMovie(req.body.title+'');
+
+    logger.log({
+        level: "info",
+        message: "Film créé : "+req.body.title,
+        source: "Movies"
+    });
 
     //Seems valid
     return res.json(movie);
@@ -54,6 +65,12 @@ module.exports = async(app)=>{
 
     const movies = await movieControllers.get(query);
 
+    logger.log({
+        level: "info",
+        message: "Film obtenu",
+        source: "Movies"
+    });
+
     //Seems valid
     return res.json(movies);
   });
@@ -76,6 +93,11 @@ module.exports = async(app)=>{
       res.status(400).json({
         "error": "Movie don't exists !"
       });
+      logger.log({
+          level: "warn",
+          message: "Film non trouvé : "+req.body.movieId,
+          source: "Movies"
+      });
       return;
     }
 
@@ -83,6 +105,12 @@ module.exports = async(app)=>{
     movieControllers.setnote(movie)
     .then(()=>{
       return res.json(movie);
+    });
+
+    logger.log({
+        level: "info",
+        message: "Note ajoutée pour le film "+req.body.movieId,
+        source: "Movies"
     });
   });
 
@@ -104,6 +132,11 @@ module.exports = async(app)=>{
       res.status(400).json({
         "error": "Movie already registered !"
       });
+      logger.log({
+          level: "warn",
+          message: "Film déjà récupéré depuis omdb : "+req.body.title,
+          source: "Movies"
+      });
       return;
     }
 
@@ -111,6 +144,12 @@ module.exports = async(app)=>{
 
     //Seems valid
     return res.json(movie);
+
+    logger.log({
+        level: "info",
+        message: "Film récupéré depuis omdb : "+req.body.title,
+        source: "Movies"
+    });
   });
 
 

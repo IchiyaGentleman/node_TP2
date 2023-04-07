@@ -49,8 +49,19 @@ module.exports = async(app)=>{
       res.status(400).json({
         "error": "Something went wrong !"
       });
+      logger.log({
+          level: "error",
+          message: "Erreur en modifiant un utilisateur : "+req.body.oldUsername,
+          source: "Users"
+      });
       return;
     }
+
+    logger.log({
+        level: "info",
+        message: "Utilisateur créé : "+user.id,
+        source: "Users"
+    });
 
     //Seems valid
     return res.json(user);
@@ -73,8 +84,19 @@ module.exports = async(app)=>{
       res.status(400).json({
         "error": "User don't exists !"
       });
+      logger.log({
+          level: "warn",
+          message: "Utilisateur non trouvé : "+req.body.username,
+          source: "Users"
+      });
       return;
     }
+
+    logger.log({
+        level: "info",
+        message: "Utilisateur modifié : "+user.id,
+        source: "Users"
+    });
 
     //Seems valid
     return res.json(user);
@@ -90,6 +112,12 @@ module.exports = async(app)=>{
     }
 
     const users = await userControllers.getAll();
+
+    logger.log({
+        level: "info",
+        message: "Tous les utilisateurs ont été retournés",
+        source: "Users"
+    });
 
     //Seems valid
     return res.json(users);

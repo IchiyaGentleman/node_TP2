@@ -12,7 +12,30 @@ const url = require('url');
 const bdd = require("./src/services/db/mongodb.js");
 const routes = require("./src/routes/index.js");
 
+const winston = require("winston");
+
+const logger = winston.createLogger({
+    level: "debug",
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json(),
+        winston.format.prettyPrint()
+    ),
+
+    transports: [
+        new winston.transports.File({ filename: "combined.log" }),
+    ],
+});
+
 bdd.connectTodB();
+
+logger.log({
+    level: "debug",
+    message: "Connecté à la BDD",
+    source: "app"
+});
+
+
 
 
 
